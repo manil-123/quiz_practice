@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:quiz_practice/constants/colors.dart';
+import 'package:quiz_practice/widgets/game_countdown_timer.dart';
 import 'package:quiz_practice/widgets/game_header.dart';
 import 'package:quiz_practice/widgets/game_status.dart';
 
@@ -27,6 +28,13 @@ class _GameScreenState extends State<GameScreen> {
               ),
               GameStatus(
                 status: 0,
+              ),
+              SizedBox(
+                height: 4.0,
+              ),
+              Align(
+                alignment: Alignment.center,
+                child: GameCountDownTimer(),
               ),
             ],
           ),
