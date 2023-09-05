@@ -9,18 +9,18 @@ class TimerPainter extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
     final Paint paint = Paint()
-      ..color = AppColors.lightCircleColor
+      ..color = Colors.red
       ..style = PaintingStyle.stroke
-      ..strokeWidth = 3;
+      ..strokeWidth = 8;
 
     final Rect rect =
-        Rect.fromCircle(center: size.center(Offset.zero), radius: 25);
-    canvas.drawCircle(size.center(Offset.zero), 25, paint);
+        Rect.fromCircle(center: size.center(Offset.zero), radius: 20);
+    canvas.drawCircle(size.center(Offset.zero), 20, paint);
 
     final Paint redPaint = Paint()
-      ..color = Colors.white
+      ..color = AppColors.purpleColor
       ..style = PaintingStyle.stroke
-      ..strokeWidth = 3;
+      ..strokeWidth = 8;
 
     final double sweepAngle = 2 * progress * 3.14;
     canvas.drawArc(rect, -1.57, sweepAngle, false, redPaint);
