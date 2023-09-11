@@ -18,7 +18,7 @@ class QuizPage extends StatefulWidget {
 class _QuizPageState extends State<QuizPage> {
   double progress = 0.0;
   late Timer timer;
-  int seconds = 10;
+  int seconds = 30;
 
   @override
   void initState() {
@@ -29,7 +29,7 @@ class _QuizPageState extends State<QuizPage> {
         if (seconds == 0) {
           timer.cancel();
         }
-        progress = 1.0 - (seconds / 10.0);
+        progress = 1.0 - (seconds / 30.0);
       });
     });
   }
@@ -52,9 +52,10 @@ class _QuizPageState extends State<QuizPage> {
               CustomHeader(
                 progress: progress,
                 seconds: seconds,
+                level: widget.level,
               ),
               const Padding(
-                padding: EdgeInsets.all(16.0),
+                padding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
                 child: LinearProgressIndicator(
                   value: 0.1,
                   backgroundColor: AppColors.lightCircleColor,
@@ -62,13 +63,25 @@ class _QuizPageState extends State<QuizPage> {
                 ),
               ),
               Padding(
-                padding: const EdgeInsets.all(16.0),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
                 child: ClipRRect(
-                    borderRadius: BorderRadius.circular(12),
-                    child: Image.asset('assets/images/toystory.jpg')),
+                  borderRadius: BorderRadius.circular(12),
+                  child: Image.asset('assets/images/toystory.jpg'),
+                ),
               ),
               const Padding(
-                padding: EdgeInsets.all(16.0),
+                padding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+                child: Text(
+                  'Question 1 of 10',
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 14,
+                  ),
+                ),
+              ),
+              const Padding(
+                padding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
                 child: Text(
                   'What is the name of this movie?',
                   style: TextStyle(

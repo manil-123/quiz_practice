@@ -3,11 +3,16 @@ import 'package:quiz_practice/utils/circle_painter.dart';
 import 'package:quiz_practice/utils/timer_painter.dart';
 
 class CustomHeader extends StatelessWidget {
-  const CustomHeader(
-      {super.key, required this.progress, required this.seconds});
+  const CustomHeader({
+    super.key,
+    required this.progress,
+    required this.seconds,
+    required this.level,
+  });
 
   final double progress;
   final int seconds;
+  final int level;
 
   @override
   Widget build(BuildContext context) {
@@ -33,6 +38,14 @@ class CustomHeader extends StatelessWidget {
               size: 16,
             ),
           ],
+        ),
+        Text(
+          'Level $level',
+          style: const TextStyle(
+            color: Colors.white,
+            fontSize: 20,
+            fontWeight: FontWeight.w500,
+          ),
         ),
         Stack(
           alignment: Alignment.center,
