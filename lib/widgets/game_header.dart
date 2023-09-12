@@ -58,11 +58,11 @@ class GameHeader extends StatelessWidget {
               width: 6,
             ),
             Text(
-              '0K',
+              '0.0K',
               style: TextStyle(
                 color: Colors.white,
                 fontSize: 16,
-                fontWeight: FontWeight.w600,
+                fontWeight: FontWeight.w500,
               ),
             ),
           ],

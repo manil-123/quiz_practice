@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:quiz_practice/constants/colors.dart';
 import 'package:quiz_practice/widgets/game_header.dart';
+import 'package:quiz_practice/widgets/game_status.dart';
 
 class GameScreen extends StatefulWidget {
   const GameScreen({super.key});
@@ -18,8 +19,15 @@ class _GameScreenState extends State<GameScreen> {
         child: Padding(
           padding: EdgeInsets.all(16.0),
           child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               GameHeader(),
+              SizedBox(
+                height: 4.0,
+              ),
+              GameStatus(
+                status: 0,
+              ),
             ],
           ),
         ),
