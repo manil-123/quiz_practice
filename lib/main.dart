@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:quiz_practice/app/database/local_storage.dart';
+import 'package:quiz_practice/cubits/quiz_page_cubit.dart';
 import 'package:quiz_practice/injection.dart';
 import 'package:quiz_practice/screens/levels_screen.dart';
 
@@ -20,14 +22,21 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: 'Flutter Quiz App',
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-        useMaterial3: true,
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(
+          create: (_) => getIt<QuizPageCubit>(),
+        ),
+      ],
+      child: MaterialApp(
+        debugShowCheckedModeBanner: false,
+        title: 'Flutter Quiz App',
+        theme: ThemeData(
+          colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+          useMaterial3: true,
+        ),
+        home: const LevelsScreen(),
       ),
-      home: const LevelsScreen(),
     );
   }
 }
