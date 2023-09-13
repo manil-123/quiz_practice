@@ -1,6 +1,6 @@
 import 'dart:async';
-
 import 'package:flutter/material.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 import 'package:quiz_practice/constants/colors.dart';
 import 'package:quiz_practice/utils/timer_painter.dart';
 
@@ -13,13 +13,16 @@ class QuestionAnswerContainer extends StatefulWidget {
 }
 
 class _QuestionAnswerContainerState extends State<QuestionAnswerContainer>
-    with SingleTickerProviderStateMixin {
+    with TickerProviderStateMixin {
   double progress = 0.0;
   late Timer timer;
   int seconds = 10;
 
+  int? _selectedIndex;
+
   late final AnimationController _controller;
   late final Animation<double> _animation;
+
   @override
   void initState() {
     super.initState();
@@ -97,21 +100,34 @@ class _QuestionAnswerContainerState extends State<QuestionAnswerContainer>
                 Column(
                   children: List.generate(
                     4,
-                    (index) => Container(
-                      width: double.infinity,
-                      margin: const EdgeInsets.symmetric(
-                          horizontal: 20.0, vertical: 10.0),
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 20.0, vertical: 10.0),
-                      decoration: BoxDecoration(
-                        color: AppColors.answerOptionColor,
-                        borderRadius: BorderRadius.circular(25),
-                      ),
-                      child: Text(
-                        "Option $index",
-                        style: const TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.w400,
+                    (index) => InkWell(
+                      onTap: () {
+                        if (_selectedIndex == null) {
+                          setState(() {
+                            _selectedIndex = index;
+                          });
+                        }
+                      },
+                      child: Container(
+                        width: double.infinity,
+                        margin: const EdgeInsets.symmetric(
+                            horizontal: 20.0, vertical: 10.0),
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 20.0, vertical: 10.0),
+                        decoration: BoxDecoration(
+                          color: _selectedIndex == index
+                              ? AppColors.lightCircleColor
+                              : AppColors.answerOptionColor,
+                          borderRadius: BorderRadius.circular(25),
+                        ),
+                        child: Text(
+                          "Option $index",
+                          style: TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.w400,
+                              color: _selectedIndex == index
+                                  ? Colors.white
+                                  : Colors.black),
                         ),
                       ),
                     ),
@@ -119,32 +135,72 @@ class _QuestionAnswerContainerState extends State<QuestionAnswerContainer>
                 ),
               ],
             ),
-          ),
-        ),
-        Positioned(
-          left: 0,
-          right: 0,
-          top: -30,
-          child: Stack(
-            alignment: Alignment.center,
-            children: [
-              CircleAvatar(
-                radius: 30,
-                backgroundColor: AppColors.lightPurpleColor,
-                child: CustomPaint(
-                  painter: TimerPainter(progress),
-                ),
-              ),
-              Text(
-                '$seconds',
-                style: const TextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.w700,
-                ),
-              ),
+          ).animate(
+            effects: [
+              ScaleEffect(
+                  curve: Curves.easeIn,
+                  duration: Duration(
+                    milliseconds: 800,
+                  )),
             ],
           ),
-        )
+        ),
+        seconds != 0
+            ? Positioned(
+                left: 0,
+                right: 0,
+                top: -30,
+                child: Stack(
+                  alignment: Alignment.center,
+                  children: [
+                    CircleAvatar(
+                      radius: 30,
+                      backgroundColor: AppColors.lightPurpleColor,
+                      child: CustomPaint(
+                        painter: TimerPainter(progress),
+                      ),
+                    ),
+                    Text(
+                      '$seconds',
+                      style: const TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.w700,
+                      ),
+                    ),
+                  ],
+                ),
+              )
+            : Positioned(
+                left: 0,
+                right: 0,
+                top: -16,
+                child: Stack(
+                  alignment: Alignment.center,
+                  children: [
+                    Container(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 16.0,
+                        vertical: 8.0,
+                      ),
+                      decoration: BoxDecoration(
+                        color: Colors.red,
+                        borderRadius: BorderRadius.circular(25),
+                      ),
+                      child: const Text(
+                        'Please wait... ',
+                        style: TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.w700,
+                          color: Colors.white,
+                        ),
+                      ),
+                    )
+                  ],
+                ).animate().shake(
+                      delay: const Duration(milliseconds: 700),
+                      duration: const Duration(milliseconds: 1000),
+                    ),
+              )
       ],
     );
   }
