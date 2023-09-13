@@ -25,18 +25,22 @@ class _GameScreenState extends State<GameScreen> {
 
   void _startTimer() {
     Timer.periodic(const Duration(seconds: 1), (timer) {
-      setState(() {
-        if (_seconds != 0) {
-          _seconds--;
-        }
-      });
+      if (mounted) {
+        setState(() {
+          if (_seconds != 0) {
+            _seconds--;
+          }
+        });
+      }
     });
     Timer.periodic(const Duration(milliseconds: 300), (timer) {
-      setState(() {
-        if (_seconds < 6 && _seconds != 0) {
-          _isVisible = !_isVisible; // Toggle visibility every second
-        }
-      });
+      if (mounted) {
+        setState(() {
+          if (_seconds < 6 && _seconds != 0) {
+            _isVisible = !_isVisible; // Toggle visibility every second
+          }
+        });
+      }
     });
   }
 

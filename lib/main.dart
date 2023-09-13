@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:quiz_practice/app/database/local_storage.dart';
 import 'package:quiz_practice/cubits/quiz_page_cubit.dart';
 import 'package:quiz_practice/injection.dart';
-import 'screens/game_screen.dart';
+import 'package:quiz_practice/screens/option_screen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -35,7 +35,7 @@ class MyApp extends StatelessWidget {
           colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
           useMaterial3: true,
         ),
-        home: const GameScreen(),
+        home: const OptionsScreen(),
       ),
     );
   }
