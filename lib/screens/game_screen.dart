@@ -5,6 +5,7 @@ import 'package:quiz_practice/widgets/game_countdown_timer.dart';
 import 'package:quiz_practice/widgets/game_header.dart';
 import 'package:quiz_practice/widgets/game_status.dart';
 import 'package:quiz_practice/widgets/question_answer_container.dart';
+import 'package:quiz_practice/widgets/rules_container.dart';
 
 class GameScreen extends StatefulWidget {
   const GameScreen({super.key});
@@ -75,10 +76,12 @@ class _GameScreenState extends State<GameScreen> {
                 child:
                     SizedBox(), // Empty Expanded widget to take remaining space
               ),
-              Visibility(
-                visible: _seconds == 0,
-                child: const QuestionAnswerContainer(),
-              ),
+              _seconds != 0
+                  ? const RulesContainer()
+                  : Visibility(
+                      visible: _seconds == 0,
+                      child: const QuestionAnswerContainer(),
+                    ),
             ],
           ),
         ),
