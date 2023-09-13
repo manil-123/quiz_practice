@@ -77,7 +77,9 @@ class _GameScreenState extends State<GameScreen> {
                     SizedBox(), // Empty Expanded widget to take remaining space
               ),
               _seconds != 0
-                  ? const RulesContainer()
+                  ? RulesContainer(
+                      seconds: _seconds,
+                    )
                   : Visibility(
                       visible: _seconds == 0,
                       child: const QuestionAnswerContainer(),

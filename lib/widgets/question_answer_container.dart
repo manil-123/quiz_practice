@@ -57,6 +57,7 @@ class _QuestionAnswerContainerState extends State<QuestionAnswerContainer>
 
   @override
   void dispose() {
+    _controller.dispose();
     timer.cancel();
     super.dispose();
   }
