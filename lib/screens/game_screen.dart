@@ -14,7 +14,7 @@ class GameScreen extends StatefulWidget {
 }
 
 class _GameScreenState extends State<GameScreen> {
-  int _seconds = 15;
+  int _seconds = 6;
   bool _isVisible = true;
 
   @override
