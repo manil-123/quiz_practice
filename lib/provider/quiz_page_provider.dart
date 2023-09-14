@@ -14,7 +14,7 @@ class QuizPageNotifier extends StateNotifier<GenericState<QuizPageState>> {
           const GenericState<QuizPageState>.initial(),
         );
 
-  void loadQuizFirstTime(int level) async {
+  void loadQuizFirstTime() async {
     state = const GenericState<QuizPageState>.loading();
 
     final data = QuizPageState(
@@ -23,6 +23,18 @@ class QuizPageNotifier extends StateNotifier<GenericState<QuizPageState>> {
     );
 
     state = GenericState<QuizPageState>.success(data);
+  }
+
+  void selectAnswer(String selectedAnswer) {
+    state.maybeWhen(
+      success: (quizPageState) {
+        final updatedState = quizPageState.copyWith(
+          selectedAnswer: selectedAnswer,
+        );
+        state = GenericState<QuizPageState>.success(updatedState);
+      },
+      orElse: () {},
+    );
   }
 
   void loadNextQuestion() {

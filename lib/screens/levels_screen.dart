@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:quiz_practice/app/database/local_storage.dart';
 import 'package:quiz_practice/constants/colors.dart';
 import 'package:quiz_practice/injection.dart';
-import 'package:quiz_practice/screens/quiz_page.dart';
 
 class LevelsScreen extends StatefulWidget {
   const LevelsScreen({super.key});
@@ -68,13 +67,13 @@ class _LevelsScreenState extends State<LevelsScreen> {
                     return InkWell(
                       onTap: () {
                         if (!isLocked) {
-                          Navigator.of(context).push(
-                            MaterialPageRoute(
-                              builder: (context) => QuizPage(
-                                level: index + 1,
-                              ),
-                            ),
-                          );
+                          // Navigator.of(context).push(
+                          //   MaterialPageRoute(
+                          //     builder: (context) => QuizPage(
+                          //       level: index + 1,
+                          //     ),
+                          //   ),
+                          // );
                         }
                       },
                       child: Container(
