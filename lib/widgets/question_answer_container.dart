@@ -20,21 +20,9 @@ class _QuestionAnswerContainerState extends State<QuestionAnswerContainer>
 
   int? _selectedIndex;
 
-  late final AnimationController _controller;
-  late final Animation<double> _animation;
-
   @override
   void initState() {
     super.initState();
-    _controller = AnimationController(
-      duration: const Duration(milliseconds: 800),
-      vsync: this,
-    )..repeat();
-    _animation = CurvedAnimation(
-      parent: _controller,
-      curve: Curves.easeIn,
-    );
-    _controller.forward(); // Start the animation
     startTimer();
   }
 
@@ -60,7 +48,6 @@ class _QuestionAnswerContainerState extends State<QuestionAnswerContainer>
 
   @override
   void dispose() {
-    _controller.dispose();
     timer.cancel();
     super.dispose();
   }
@@ -70,80 +57,72 @@ class _QuestionAnswerContainerState extends State<QuestionAnswerContainer>
     return Stack(
       clipBehavior: Clip.none,
       children: [
-        AnimatedBuilder(
-          animation: _animation,
-          builder: (context, child) {
-            return Transform.scale(
-              scale: _animation.value,
-              child: child,
-            );
-          },
-          child: Container(
-            width: double.infinity,
-            padding: const EdgeInsets.symmetric(
-              vertical: 30.0,
-            ),
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(12),
-            ),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                const Text(
-                  'Question',
-                  style: TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.w600,
-                  ),
+        Container(
+          width: double.infinity,
+          padding: const EdgeInsets.symmetric(
+            vertical: 30.0,
+          ),
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(12),
+          ),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              const Text(
+                'Question',
+                style: TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.w600,
                 ),
-                Column(
-                  children: List.generate(
-                    4,
-                    (index) => InkWell(
-                      onTap: () {
-                        if (_selectedIndex == null) {
-                          setState(() {
-                            _selectedIndex = index;
-                          });
-                        }
-                      },
-                      child: Container(
-                        width: double.infinity,
-                        margin: const EdgeInsets.symmetric(
-                            horizontal: 20.0, vertical: 10.0),
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 20.0, vertical: 10.0),
-                        decoration: BoxDecoration(
-                          color: _selectedIndex == index
-                              ? AppColors.lightCircleColor
-                              : AppColors.answerOptionColor,
-                          borderRadius: BorderRadius.circular(25),
-                        ),
-                        child: Text(
-                          "Option $index",
-                          style: TextStyle(
-                              fontSize: 16,
-                              fontWeight: FontWeight.w400,
-                              color: _selectedIndex == index
-                                  ? Colors.white
-                                  : Colors.black),
-                        ),
+              ),
+              Column(
+                children: List.generate(
+                  4,
+                  (index) => InkWell(
+                    onTap: () {
+                      if (_selectedIndex == null) {
+                        setState(() {
+                          _selectedIndex = index;
+                        });
+                      }
+                    },
+                    child: Container(
+                      width: double.infinity,
+                      margin: const EdgeInsets.symmetric(
+                          horizontal: 20.0, vertical: 10.0),
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 20.0, vertical: 10.0),
+                      decoration: BoxDecoration(
+                        color: _selectedIndex == index
+                            ? AppColors.lightCircleColor
+                            : AppColors.answerOptionColor,
+                        borderRadius: BorderRadius.circular(25),
+                      ),
+                      child: Text(
+                        "Option $index",
+                        style: TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.w400,
+                            color: _selectedIndex == index
+                                ? Colors.white
+                                : Colors.black),
                       ),
                     ),
                   ),
                 ),
-              ],
-            ),
-          ).animate(
-            effects: [
-              ScaleEffect(
-                  curve: Curves.easeIn,
-                  duration: Duration(
-                    milliseconds: 800,
-                  )),
+              ),
             ],
           ),
+        ).animate(
+          effects: [
+            const ScaleEffect(
+              curve: Curves.easeIn,
+              duration: Duration(
+                milliseconds: 800,
+              ),
+            ),
+          ],
         ),
         seconds != 0
             ? Positioned(
