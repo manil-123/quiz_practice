@@ -5,9 +5,9 @@ part 'quiz_page_state.freezed.dart';
 @freezed
 class QuizPageState with _$QuizPageState {
   const factory QuizPageState({
-    required final int level,
-    required final List<Question> questionsList,
-    final Question? currentQuestion,
-    final int? currentQuestionIndex,
+    @Default(1) final int index,
+    required final Question currentQuestion,
+    @Default(2) int lives,
+    String? selectedAnswer,
   }) = _QuizPageState;
 }

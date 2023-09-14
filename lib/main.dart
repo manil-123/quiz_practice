@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:quiz_practice/app/database/local_storage.dart';
-import 'package:quiz_practice/cubits/quiz_page_cubit.dart';
 import 'package:quiz_practice/injection.dart';
 import 'package:quiz_practice/screens/option_screen.dart';
 
@@ -22,12 +21,7 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MultiBlocProvider(
-      providers: [
-        BlocProvider(
-          create: (_) => getIt<QuizPageCubit>(),
-        ),
-      ],
+    return ProviderScope(
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
         title: 'Flutter Quiz App',

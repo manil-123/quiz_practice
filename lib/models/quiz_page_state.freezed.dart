@@ -16,10 +16,10 @@ final _privateConstructorUsedError = UnsupportedError(
 
 /// @nodoc
 mixin _$QuizPageState {
-  int get level => throw _privateConstructorUsedError;
-  List<Question> get questionsList => throw _privateConstructorUsedError;
-  Question? get currentQuestion => throw _privateConstructorUsedError;
-  int? get currentQuestionIndex => throw _privateConstructorUsedError;
+  int get index => throw _privateConstructorUsedError;
+  Question get currentQuestion => throw _privateConstructorUsedError;
+  int get lives => throw _privateConstructorUsedError;
+  String? get selectedAnswer => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
   $QuizPageStateCopyWith<QuizPageState> get copyWith =>
@@ -33,10 +33,7 @@ abstract class $QuizPageStateCopyWith<$Res> {
       _$QuizPageStateCopyWithImpl<$Res, QuizPageState>;
   @useResult
   $Res call(
-      {int level,
-      List<Question> questionsList,
-      Question? currentQuestion,
-      int? currentQuestionIndex});
+      {int index, Question currentQuestion, int lives, String? selectedAnswer});
 }
 
 /// @nodoc
@@ -52,28 +49,28 @@ class _$QuizPageStateCopyWithImpl<$Res, $Val extends QuizPageState>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? level = null,
-    Object? questionsList = null,
-    Object? currentQuestion = freezed,
-    Object? currentQuestionIndex = freezed,
+    Object? index = null,
+    Object? currentQuestion = null,
+    Object? lives = null,
+    Object? selectedAnswer = freezed,
   }) {
     return _then(_value.copyWith(
-      level: null == level
-          ? _value.level
-          : level // ignore: cast_nullable_to_non_nullable
+      index: null == index
+          ? _value.index
+          : index // ignore: cast_nullable_to_non_nullable
               as int,
-      questionsList: null == questionsList
-          ? _value.questionsList
-          : questionsList // ignore: cast_nullable_to_non_nullable
-              as List<Question>,
-      currentQuestion: freezed == currentQuestion
+      currentQuestion: null == currentQuestion
           ? _value.currentQuestion
           : currentQuestion // ignore: cast_nullable_to_non_nullable
-              as Question?,
-      currentQuestionIndex: freezed == currentQuestionIndex
-          ? _value.currentQuestionIndex
-          : currentQuestionIndex // ignore: cast_nullable_to_non_nullable
-              as int?,
+              as Question,
+      lives: null == lives
+          ? _value.lives
+          : lives // ignore: cast_nullable_to_non_nullable
+              as int,
+      selectedAnswer: freezed == selectedAnswer
+          ? _value.selectedAnswer
+          : selectedAnswer // ignore: cast_nullable_to_non_nullable
+              as String?,
     ) as $Val);
   }
 }
@@ -87,10 +84,7 @@ abstract class _$$_QuizPageStateCopyWith<$Res>
   @override
   @useResult
   $Res call(
-      {int level,
-      List<Question> questionsList,
-      Question? currentQuestion,
-      int? currentQuestionIndex});
+      {int index, Question currentQuestion, int lives, String? selectedAnswer});
 }
 
 /// @nodoc
@@ -104,28 +98,28 @@ class __$$_QuizPageStateCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? level = null,
-    Object? questionsList = null,
-    Object? currentQuestion = freezed,
-    Object? currentQuestionIndex = freezed,
+    Object? index = null,
+    Object? currentQuestion = null,
+    Object? lives = null,
+    Object? selectedAnswer = freezed,
   }) {
     return _then(_$_QuizPageState(
-      level: null == level
-          ? _value.level
-          : level // ignore: cast_nullable_to_non_nullable
+      index: null == index
+          ? _value.index
+          : index // ignore: cast_nullable_to_non_nullable
               as int,
-      questionsList: null == questionsList
-          ? _value._questionsList
-          : questionsList // ignore: cast_nullable_to_non_nullable
-              as List<Question>,
-      currentQuestion: freezed == currentQuestion
+      currentQuestion: null == currentQuestion
           ? _value.currentQuestion
           : currentQuestion // ignore: cast_nullable_to_non_nullable
-              as Question?,
-      currentQuestionIndex: freezed == currentQuestionIndex
-          ? _value.currentQuestionIndex
-          : currentQuestionIndex // ignore: cast_nullable_to_non_nullable
-              as int?,
+              as Question,
+      lives: null == lives
+          ? _value.lives
+          : lives // ignore: cast_nullable_to_non_nullable
+              as int,
+      selectedAnswer: freezed == selectedAnswer
+          ? _value.selectedAnswer
+          : selectedAnswer // ignore: cast_nullable_to_non_nullable
+              as String?,
     ));
   }
 }
@@ -134,30 +128,25 @@ class __$$_QuizPageStateCopyWithImpl<$Res>
 
 class _$_QuizPageState implements _QuizPageState {
   const _$_QuizPageState(
-      {required this.level,
-      required final List<Question> questionsList,
-      this.currentQuestion,
-      this.currentQuestionIndex})
-      : _questionsList = questionsList;
+      {this.index = 1,
+      required this.currentQuestion,
+      this.lives = 2,
+      this.selectedAnswer});
 
   @override
-  final int level;
-  final List<Question> _questionsList;
+  @JsonKey()
+  final int index;
   @override
-  List<Question> get questionsList {
-    if (_questionsList is EqualUnmodifiableListView) return _questionsList;
-    // ignore: implicit_dynamic_type
-    return EqualUnmodifiableListView(_questionsList);
-  }
-
+  final Question currentQuestion;
   @override
-  final Question? currentQuestion;
+  @JsonKey()
+  final int lives;
   @override
-  final int? currentQuestionIndex;
+  final String? selectedAnswer;
 
   @override
   String toString() {
-    return 'QuizPageState(level: $level, questionsList: $questionsList, currentQuestion: $currentQuestion, currentQuestionIndex: $currentQuestionIndex)';
+    return 'QuizPageState(index: $index, currentQuestion: $currentQuestion, lives: $lives, selectedAnswer: $selectedAnswer)';
   }
 
   @override
@@ -165,22 +154,17 @@ class _$_QuizPageState implements _QuizPageState {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$_QuizPageState &&
-            (identical(other.level, level) || other.level == level) &&
-            const DeepCollectionEquality()
-                .equals(other._questionsList, _questionsList) &&
+            (identical(other.index, index) || other.index == index) &&
             (identical(other.currentQuestion, currentQuestion) ||
                 other.currentQuestion == currentQuestion) &&
-            (identical(other.currentQuestionIndex, currentQuestionIndex) ||
-                other.currentQuestionIndex == currentQuestionIndex));
+            (identical(other.lives, lives) || other.lives == lives) &&
+            (identical(other.selectedAnswer, selectedAnswer) ||
+                other.selectedAnswer == selectedAnswer));
   }
 
   @override
-  int get hashCode => Object.hash(
-      runtimeType,
-      level,
-      const DeepCollectionEquality().hash(_questionsList),
-      currentQuestion,
-      currentQuestionIndex);
+  int get hashCode =>
+      Object.hash(runtimeType, index, currentQuestion, lives, selectedAnswer);
 
   @JsonKey(ignore: true)
   @override
@@ -191,19 +175,19 @@ class _$_QuizPageState implements _QuizPageState {
 
 abstract class _QuizPageState implements QuizPageState {
   const factory _QuizPageState(
-      {required final int level,
-      required final List<Question> questionsList,
-      final Question? currentQuestion,
-      final int? currentQuestionIndex}) = _$_QuizPageState;
+      {final int index,
+      required final Question currentQuestion,
+      final int lives,
+      final String? selectedAnswer}) = _$_QuizPageState;
 
   @override
-  int get level;
+  int get index;
   @override
-  List<Question> get questionsList;
+  Question get currentQuestion;
   @override
-  Question? get currentQuestion;
+  int get lives;
   @override
-  int? get currentQuestionIndex;
+  String? get selectedAnswer;
   @override
   @JsonKey(ignore: true)
   _$$_QuizPageStateCopyWith<_$_QuizPageState> get copyWith =>

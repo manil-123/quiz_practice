@@ -12,7 +12,6 @@
 import 'package:get_it/get_it.dart' as _i1;
 import 'package:injectable/injectable.dart' as _i2;
 import 'package:quiz_practice/app/database/local_storage.dart' as _i3;
-import 'package:quiz_practice/cubits/quiz_page_cubit.dart' as _i4;
 
 extension GetItInjectableX on _i1.GetIt {
 // initializes the registration of main-scope dependencies inside of GetIt
@@ -26,7 +25,6 @@ extension GetItInjectableX on _i1.GetIt {
       environmentFilter,
     );
     gh.lazySingleton<_i3.LocalStorage>(() => _i3.LocalStorage());
-    gh.factory<_i4.QuizPageCubit>(() => _i4.QuizPageCubit());
     return this;
   }
 }

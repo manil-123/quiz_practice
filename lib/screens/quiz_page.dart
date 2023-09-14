@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:quiz_practice/app/state/generic_state.dart';
 import 'package:quiz_practice/constants/colors.dart';
-import 'package:quiz_practice/cubits/quiz_page_cubit.dart';
+import 'package:quiz_practice/provider/quiz_page_provider.dart';
 import 'package:quiz_practice/models/quiz_page_state.dart';
 import 'package:quiz_practice/widgets/custom_header.dart';
 
