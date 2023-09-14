@@ -1,3 +1,4 @@
+import 'dart:developer';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:quiz_practice/app/state/generic_state.dart';
 import 'package:quiz_practice/constants/question_list.dart';
@@ -37,19 +38,45 @@ class QuizPageNotifier extends StateNotifier<GenericState<QuizPageState>> {
     );
   }
 
+  void checkAnswer() {
+    state.maybeWhen(
+      success: (quizPageState) {
+        final selectedAnswer = quizPageState.selectedAnswer;
+        if (selectedAnswer == null) {
+          final remainingLives = quizPageState.lives;
+          if (remainingLives != 0) {
+            final updatedState = quizPageState.copyWith(
+              lives: remainingLives - 1,
+            );
+            state = GenericState<QuizPageState>.success(updatedState);
+          }
+          if (quizPageState.currentQuestion.index < 8 &&
+              quizPageState.lives > 0) {
+            Future.delayed(const Duration(milliseconds: 1700), () {
+              loadNextQuestion();
+            });
+          } else {
+            state = const GenericState<QuizPageState>.error("Game Over");
+          }
+        }
+      },
+      orElse: () {},
+    );
+  }
+
   void loadNextQuestion() {
     state.maybeWhen(
       success: (quizPageState) {
         final currentQuestionIndex = quizPageState.index;
+        log(currentQuestionIndex.toString());
 
         if (currentQuestionIndex < 10) {
           final nextQuestionIndex = currentQuestionIndex + 1;
           final nextQuestion = level1QuestionList[nextQuestionIndex];
           final updatedState = quizPageState.copyWith(
-            index: currentQuestionIndex,
+            index: nextQuestionIndex,
             currentQuestion: nextQuestion,
           );
-
           state = GenericState<QuizPageState>.success(updatedState);
         }
       },

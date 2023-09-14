@@ -109,7 +109,7 @@ class _RulesContainerState extends State<RulesContainer> {
               milliseconds: 500,
             ),
           ),
-        if (widget.seconds < 2) ...[
+        if (widget.seconds < 3) ...[
           const ScaleEffect(
             curve: Curves.easeIn,
             begin: Offset(0.5, 0.5),
