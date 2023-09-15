@@ -181,6 +181,8 @@ class _QuestionAnswerContainerState
                             selectedAnswer: quizDataSuccessState.selectedAnswer,
                             text: _getOptionText(
                                 quizDataSuccessState.currentQuestion, index),
+                            correctAnswer: quizDataSuccessState
+                                .currentQuestion.correctAnswer,
                           ),
                         ),
                       ),
@@ -251,7 +253,7 @@ class _QuestionAnswerContainerState
                           },
                           wrong: () {
                             return _answerResultContainer(
-                              Colors.blue,
+                              Colors.red,
                               Icons.close,
                               'Wrong',
                             );
@@ -332,27 +334,53 @@ class _QuestionAnswerContainerState
   }
 }
 
-class AnswerOption extends StatelessWidget {
-  final String text;
-  final String? selectedAnswer;
-
+class AnswerOption extends ConsumerWidget {
   const AnswerOption({
     Key? key,
     required this.text,
     required this.selectedAnswer,
+    required this.correctAnswer,
   }) : super(key: key);
 
+  final String text;
+  final String? selectedAnswer;
+  final String correctAnswer;
+
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final optionAnswerState = ref.watch(optionAnswerProvider);
+
     final isSelected = text == selectedAnswer && selectedAnswer != null;
+
+    return optionAnswerState.maybeWhen(
+      orElse: () {
+        return _answerContainer(
+          text == correctAnswer ? Colors.green : AppColors.answerOptionColor,
+          text == correctAnswer ? Colors.white : Colors.black,
+        );
+      },
+      initial: () {
+        return _answerContainer(
+          isSelected ? AppColors.lightCircleColor : AppColors.answerOptionColor,
+          isSelected ? Colors.white : Colors.black,
+        );
+      },
+      empty: () {
+        return _answerContainer(
+          isSelected ? AppColors.lightCircleColor : AppColors.answerOptionColor,
+          isSelected ? Colors.white : Colors.black,
+        );
+      },
+    );
+  }
+
+  Widget _answerContainer(Color backgroundColor, Color textColor) {
     return Container(
       width: double.infinity,
       margin: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
       padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
       decoration: BoxDecoration(
-        color: isSelected
-            ? AppColors.lightCircleColor
-            : AppColors.answerOptionColor,
+        color: backgroundColor,
         borderRadius: BorderRadius.circular(25),
       ),
       child: Text(
@@ -360,7 +388,7 @@ class AnswerOption extends StatelessWidget {
         style: TextStyle(
           fontSize: 16,
           fontWeight: FontWeight.w400,
-          color: isSelected ? Colors.white : Colors.black,
+          color: textColor,
         ),
       ),
     );
