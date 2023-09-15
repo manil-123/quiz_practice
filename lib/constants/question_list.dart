@@ -8,7 +8,7 @@ final level1QuestionList = [
     optionB: 'Question 1 Option 2',
     optionC: 'Question 1 Option 3',
     optionD: 'Question 1 Option 4',
-    correctAnswer: 'Question 1 Option 1',
+    correctAnswer: 'Question 1 Option 3',
   ),
   Question(
     index: 1,
@@ -17,7 +17,7 @@ final level1QuestionList = [
     optionB: 'Question 2 Option 2',
     optionC: 'Question 2 Option 3',
     optionD: 'Question 2 Option 4',
-    correctAnswer: 'Question 2 Option 1',
+    correctAnswer: 'Question 2 Option 2',
   ),
   Question(
     index: 2,
@@ -26,7 +26,7 @@ final level1QuestionList = [
     optionB: 'Question 3 Option 2',
     optionC: 'Question 3 Option 3',
     optionD: 'Question 3 Option 4',
-    correctAnswer: 'Question 3 Option 1',
+    correctAnswer: 'Question 3 Option 4',
   ),
   Question(
     index: 3,
@@ -44,7 +44,7 @@ final level1QuestionList = [
     optionB: 'Question 5 Option 2',
     optionC: 'Question 5 Option 3',
     optionD: 'Question 5 Option 4',
-    correctAnswer: 'Question 5 Option 1',
+    correctAnswer: 'Question 5 Option 3',
   ),
   Question(
     index: 5,
@@ -53,7 +53,7 @@ final level1QuestionList = [
     optionB: 'Question 6 Option 2',
     optionC: 'Question 6 Option 3',
     optionD: 'Question 6 Option 4',
-    correctAnswer: 'Question 6 Option 1',
+    correctAnswer: 'Question 6 Option 2',
   ),
   Question(
     index: 6,
@@ -62,7 +62,7 @@ final level1QuestionList = [
     optionB: 'Question 7 Option 2',
     optionC: 'Question 7 Option 3',
     optionD: 'Question 7 Option 4',
-    correctAnswer: 'Question 7 Option 1',
+    correctAnswer: 'Question 7 Option 2',
   ),
   Question(
     index: 7,
@@ -80,7 +80,7 @@ final level1QuestionList = [
     optionB: 'Question 9 Option 2',
     optionC: 'Question 9 Option 3',
     optionD: 'Question 9 Option 4',
-    correctAnswer: 'Question 9 Option 1',
+    correctAnswer: 'Question 9 Option 4',
   ),
   Question(
     index: 9,
@@ -89,7 +89,7 @@ final level1QuestionList = [
     optionB: 'Question 10 Option 2',
     optionC: 'Question 10 Option 3',
     optionD: 'Question 10 Option 4',
-    correctAnswer: 'Question 10 Option 1',
+    correctAnswer: 'Question 10 Option 3',
   ),
 ];
 

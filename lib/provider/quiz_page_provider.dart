@@ -52,6 +52,7 @@ class QuizPageNotifier extends StateNotifier<GenericState<QuizPageState>> {
       success: (quizPageState) {
         final selectedAnswer = quizPageState.selectedAnswer;
         final remainingLives = quizPageState.lives;
+        log("remaining lives $remainingLives");
 
         // When user does not select any answer or the incorrect answer is selected.
         if (selectedAnswer == null ||
@@ -69,21 +70,12 @@ class QuizPageNotifier extends StateNotifier<GenericState<QuizPageState>> {
             // reduceCoins();
             //
             //
-
-            // Decrement the remaining lives and update the state.
-            final updatedState = quizPageState.copyWith(
-              lives: remainingLives - 1,
-            );
-            log("remaining lives ${updatedState.lives}");
-
-            // Update the remaining lives by decreasing it as no answer is selected.
-            state = GenericState<QuizPageState>.success(updatedState);
-
-            loadNextQuestion();
+            // Load next question with the updated lives count which is decreased by 1.
+            loadNextQuestion(remainingLives - 1);
           }
         } else {
           // If answer is correct then check for the next question.
-          loadNextQuestion();
+          loadNextQuestion(remainingLives);
         }
 
         // This will show Correct/Wrong answer text in a container
@@ -98,7 +90,7 @@ class QuizPageNotifier extends StateNotifier<GenericState<QuizPageState>> {
     );
   }
 
-  void loadNextQuestion() {
+  void loadNextQuestion(int livesCount) {
     state.maybeWhen(
       success: (quizPageState) {
         final currentQuestionIndex = quizPageState.index;
@@ -110,6 +102,7 @@ class QuizPageNotifier extends StateNotifier<GenericState<QuizPageState>> {
           final updatedState = quizPageState.copyWith(
             index: nextQuestionIndex,
             currentQuestion: nextQuestion,
+            lives: livesCount,
             selectedAnswer: null,
           );
           Future.delayed(const Duration(milliseconds: 3000), () {

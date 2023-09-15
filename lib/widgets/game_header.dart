@@ -1,15 +1,28 @@
 import 'package:flutter/material.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:quiz_practice/provider/quiz_page_provider.dart';
 
-class GameHeader extends StatelessWidget {
+class GameHeader extends ConsumerWidget {
   const GameHeader({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final quizPageState = ref.watch(quizPageProvider);
+
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         _liveVideoRow(),
-        _watchReaction(),
+        quizPageState.maybeWhen(
+          orElse: () {
+            return _watchReaction(0);
+          },
+          success: (quizData) {
+            return _watchReaction(
+              quizData.lives,
+            );
+          },
+        ),
       ],
     );
   }
@@ -45,10 +58,10 @@ class GameHeader extends StatelessWidget {
     );
   }
 
-  Widget _watchReaction() {
-    return const Row(
+  Widget _watchReaction(int livesCount) {
+    return Row(
       children: [
-        Row(
+        const Row(
           children: [
             Icon(
               Icons.visibility,
@@ -67,21 +80,21 @@ class GameHeader extends StatelessWidget {
             ),
           ],
         ),
-        SizedBox(
+        const SizedBox(
           width: 16,
         ),
         Row(
           children: [
-            Icon(
+            const Icon(
               Icons.favorite,
               color: Colors.red,
             ),
-            SizedBox(
+            const SizedBox(
               width: 6,
             ),
             Text(
-              '0',
-              style: TextStyle(
+              livesCount.toString(),
+              style: const TextStyle(
                 color: Colors.white,
                 fontSize: 16,
                 fontWeight: FontWeight.w600,
