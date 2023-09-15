@@ -1,4 +1,3 @@
-import 'dart:developer';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:quiz_practice/app/state/generic_state.dart';
 import 'package:quiz_practice/constants/question_list.dart';
@@ -18,6 +17,7 @@ class QuizPageNotifier extends StateNotifier<GenericState<QuizPageState>> {
   void loadQuizFirstTime() async {
     state = const GenericState<QuizPageState>.loading();
 
+    // Get the question list of 10 questions and load the first  question at 0 index.
     final data = QuizPageState(
       index: 0,
       currentQuestion: level1QuestionList[0],
@@ -81,8 +81,8 @@ class QuizPageNotifier extends StateNotifier<GenericState<QuizPageState>> {
     state.maybeWhen(
       success: (quizPageState) {
         final currentQuestionIndex = quizPageState.index;
-        log(currentQuestionIndex.toString());
 
+        // Load next question until the last question
         if (currentQuestionIndex < 10) {
           final nextQuestionIndex = currentQuestionIndex + 1;
           final nextQuestion = level1QuestionList[nextQuestionIndex];

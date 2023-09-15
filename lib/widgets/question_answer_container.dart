@@ -36,22 +36,27 @@ class _QuestionAnswerContainerState
 
   void startTimer() {
     timer = Timer.periodic(const Duration(seconds: 1), (timer) {
-      setState(() {
-        if (_timerRemainingSeconds > 0) {
-          _timerRemainingSeconds--;
-        }
-        if (_timerRemainingSeconds == 0) {
-          timer.cancel();
-          ref.read(quizPageProvider.notifier).checkAnswer();
-          Future.delayed(const Duration(milliseconds: 3000), () {
-            _timerRemainingSeconds = 10;
-            startTimer();
-            setState(() {});
-            _animateKey = UniqueKey();
-          });
-        }
-        progress = 1.0 - (_timerRemainingSeconds / 10.0);
-      });
+      if (mounted) {
+        setState(() {
+          if (_timerRemainingSeconds > 0) {
+            _timerRemainingSeconds--;
+          }
+          if (_timerRemainingSeconds == 0) {
+            timer.cancel();
+            ref.read(quizPageProvider.notifier).checkAnswer();
+            Future.delayed(const Duration(milliseconds: 3000), () {
+              _timerRemainingSeconds = 10;
+              startTimer();
+              if (mounted) {
+                setState(() {
+                  _animateKey = UniqueKey();
+                });
+              }
+            });
+          }
+          progress = 1.0 - (_timerRemainingSeconds / 10.0);
+        });
+      }
     });
   }
 
@@ -86,13 +91,36 @@ class _QuestionAnswerContainerState
         return const CircularProgressIndicator();
       },
       error: (errorMessgae) {
-        return Center(
-          child: Text(
-            errorMessgae,
-            style: const TextStyle(
-              color: Colors.red,
-              fontSize: 24,
-              fontWeight: FontWeight.w600,
+        return AlertDialog(
+          shape: const RoundedRectangleBorder(
+            borderRadius: BorderRadius.all(
+              Radius.circular(0.0),
+            ),
+          ),
+          title: Image.asset('assets/images/game_over.jpg'),
+          contentPadding: const EdgeInsets.only(
+            top: 32,
+          ),
+          content: InkWell(
+            onTap: () {
+              Navigator.of(context).pop();
+            },
+            child: Container(
+              padding: const EdgeInsets.all(8.0),
+              decoration: BoxDecoration(
+                color: AppColors.purpleColor.withOpacity(0.8),
+              ),
+              width: double.infinity,
+              child: const Padding(
+                padding: EdgeInsets.symmetric(vertical: 6.0),
+                child: Text(
+                  'Exit Game',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    color: Colors.white,
+                  ),
+                ),
+              ),
             ),
           ),
         );
