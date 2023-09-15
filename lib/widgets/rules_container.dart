@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
-import 'package:quiz_practice/constants/colors.dart';
 
 class RulesContainer extends StatefulWidget {
   const RulesContainer({super.key, required this.seconds});
@@ -21,45 +20,21 @@ class _RulesContainerState extends State<RulesContainer> {
           width: double.infinity,
           padding: const EdgeInsets.symmetric(
             vertical: 30.0,
+            horizontal: 16.0,
           ),
           decoration: BoxDecoration(
             color: Colors.white,
             borderRadius: BorderRadius.circular(12),
           ),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              const Text(
-                'Rules',
-                style: TextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.w600,
-                ),
-              ),
-              Column(
-                children: List.generate(
-                  4,
-                  (index) => Container(
-                    width: double.infinity,
-                    margin: const EdgeInsets.symmetric(
-                        horizontal: 20.0, vertical: 10.0),
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 20.0, vertical: 10.0),
-                    decoration: BoxDecoration(
-                      color: AppColors.answerOptionColor,
-                      borderRadius: BorderRadius.circular(25),
-                    ),
-                    child: Text(
-                      "Rules $index",
-                      style: const TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.w400,
-                      ),
-                    ),
-                  ),
-                ),
-              ),
-            ],
+          child: const Text(
+            '''1.There will be total of 10 questions.\n
+            2.You will be given 2 chances even if you get the answers wrong. But this is not valid for last and second last questio.\n
+            3. You have 10 seconds to answer the question. Not choosing answer will be counted as wrong.''',
+            textAlign: TextAlign.left,
+            style: TextStyle(
+              fontSize: 16,
+              fontWeight: FontWeight.w400,
+            ),
           ),
         ),
         Positioned(
