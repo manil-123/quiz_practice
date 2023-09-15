@@ -29,6 +29,7 @@ class QuizPageNotifier extends StateNotifier<GenericState<QuizPageState>> {
   void selectAnswer(String selectedAnswer) {
     state.maybeWhen(
       success: (quizPageState) {
+        // Update the selected answer as it is null at first.
         final updatedState = quizPageState.copyWith(
           selectedAnswer: selectedAnswer,
         );
@@ -42,26 +43,38 @@ class QuizPageNotifier extends StateNotifier<GenericState<QuizPageState>> {
     state.maybeWhen(
       success: (quizPageState) {
         final selectedAnswer = quizPageState.selectedAnswer;
+        // When user does not select any answer
         if (selectedAnswer == null) {
           final remainingLives = quizPageState.lives;
+          // Check if the remaining lives is not zero.
           if (remainingLives != 0) {
             final updatedState = quizPageState.copyWith(
               lives: remainingLives - 1,
             );
+            // Update the remaining lives by decreasing it as no answer is selected.
             state = GenericState<QuizPageState>.success(updatedState);
           }
-          if (quizPageState.currentQuestion.index < 8 &&
-              quizPageState.lives > 0) {
-            Future.delayed(const Duration(milliseconds: 1700), () {
-              loadNextQuestion();
-            });
-          } else {
-            state = const GenericState<QuizPageState>.error("Game Over");
-          }
+          checkForNextQuestion(quizPageState);
+        } else {
+          if (selectedAnswer == quizPageState.currentQuestion.correctAnswer) {
+          } else {}
         }
       },
       orElse: () {},
     );
+  }
+
+  void checkForNextQuestion(QuizPageState quizPageState) {
+    // If it is not the last 2 questions and remaining lives is not zero
+    // Proceed to next question
+    if (quizPageState.currentQuestion.index < 8 && quizPageState.lives > 0) {
+      Future.delayed(const Duration(milliseconds: 3000), () {
+        loadNextQuestion();
+      });
+    } else {
+      // Any one of the last 2 question is not answered or lives is 0
+      state = const GenericState<QuizPageState>.error("Game Over");
+    }
   }
 
   void loadNextQuestion() {

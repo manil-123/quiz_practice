@@ -43,7 +43,7 @@ class _QuestionAnswerContainerState
         if (_timerRemainingSeconds == 0) {
           timer.cancel();
           ref.read(quizPageProvider.notifier).checkAnswer();
-          Future.delayed(const Duration(milliseconds: 1700), () {
+          Future.delayed(const Duration(milliseconds: 3000), () {
             _timerRemainingSeconds = 10;
             startTimer();
             setState(() {});
