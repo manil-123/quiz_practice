@@ -63,6 +63,7 @@ class QuizPageNotifier extends StateNotifier<GenericState<QuizPageState>> {
               (quizPageState.currentQuestion.index < 8 &&
                   remainingLives == 0)) {
             Future.delayed(const Duration(milliseconds: 3000), () {
+              optionAnswerProvider.resetOptions();
               state = const GenericState<QuizPageState>.error("Game Over");
             });
           } else {
@@ -105,10 +106,11 @@ class QuizPageNotifier extends StateNotifier<GenericState<QuizPageState>> {
             lives: livesCount,
             selectedAnswer: null,
           );
-          Future.delayed(const Duration(milliseconds: 4000), () {
-            optionAnswerProvider.resetOptions();
+          Future.delayed(const Duration(milliseconds: 3000), () {
             state = GenericState<QuizPageState>.success(updatedState);
-          });
+          }).then(
+            (value) => optionAnswerProvider.resetOptions(),
+          );
         }
       },
       orElse: () {},
