@@ -105,7 +105,8 @@ class QuizPageNotifier extends StateNotifier<GenericState<QuizPageState>> {
             lives: livesCount,
             selectedAnswer: null,
           );
-          Future.delayed(const Duration(milliseconds: 3000), () {
+          Future.delayed(const Duration(milliseconds: 4000), () {
+            optionAnswerProvider.resetOptions();
             state = GenericState<QuizPageState>.success(updatedState);
           });
         }

@@ -5,6 +5,7 @@ import 'package:flutter_animate/flutter_animate.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:quiz_practice/constants/colors.dart';
 import 'package:quiz_practice/models/question.dart';
+import 'package:quiz_practice/provider/option_answer/option_answer_provider.dart';
 import 'package:quiz_practice/provider/quiz_page_provider.dart';
 import 'package:quiz_practice/utils/timer_painter.dart';
 
@@ -75,6 +76,8 @@ class _QuestionAnswerContainerState
   @override
   Widget build(BuildContext context) {
     final quizPageState = ref.watch(quizPageProvider);
+
+    final optionAnswerState = ref.watch(optionAnswerProvider);
 
     ref.listen(quizPageProvider, (previous, next) {
       log(previous.toString());
@@ -213,8 +216,10 @@ class _QuestionAnswerContainerState
                       ],
                     ),
                   );
-                } else if (_timerRemainingSeconds == 0 &&
-                    quizDataSuccessState.selectedAnswer == null) {
+                }
+                // When answer is given on time
+                // Display UI based on correct/incorrect answer
+                else {
                   return Positioned(
                     left: 0,
                     right: 0,
@@ -222,73 +227,40 @@ class _QuestionAnswerContainerState
                     child: Stack(
                       alignment: Alignment.center,
                       children: [
-                        Container(
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: 16.0,
-                            vertical: 8.0,
-                          ),
-                          decoration: BoxDecoration(
-                            color: Colors.blue,
-                            borderRadius: BorderRadius.circular(25),
-                          ),
-                          child: const Row(
-                            mainAxisSize: MainAxisSize.min,
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Icon(
-                                Icons.timer,
-                                color: Colors.white,
-                              ),
-                              SizedBox(
-                                width: 8.0,
-                              ),
-                              Text(
-                                'TIME OVER',
-                                style: TextStyle(
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.w700,
-                                  color: Colors.white,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ).animate().shake(
-                              delay: const Duration(milliseconds: 700),
-                              duration: const Duration(milliseconds: 1000),
-                            ),
-                      ],
-                    ),
-                  );
-                } else {
-                  return Positioned(
-                    left: 0,
-                    right: 0,
-                    top: -16,
-                    child: Stack(
-                      alignment: Alignment.center,
-                      children: [
-                        Container(
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: 16.0,
-                            vertical: 8.0,
-                          ),
-                          decoration: BoxDecoration(
-                            color: Colors.red,
-                            borderRadius: BorderRadius.circular(25),
-                          ),
-                          child: const Text(
-                            'Please wait... ',
-                            style: TextStyle(
-                              fontSize: 16,
-                              fontWeight: FontWeight.w700,
-                              color: Colors.white,
-                            ),
-                          ),
-                        )
+                        optionAnswerState.maybeWhen(
+                          correct: () {
+                            return _answerResultContainer(
+                              Colors.blue,
+                              Icons.check,
+                              'Correct',
+                            );
+                          },
+                          orElse: () {
+                            return _answerResultContainer(
+                              Colors.red,
+                              null,
+                              'Please wait...',
+                            );
+                          },
+                          empty: () {
+                            return _answerResultContainer(
+                              Colors.blue,
+                              Icons.timer,
+                              'TIME OVER',
+                            );
+                          },
+                          wrong: () {
+                            return _answerResultContainer(
+                              Colors.blue,
+                              Icons.close,
+                              'Wrong',
+                            );
+                          },
+                        ),
                       ],
                     ).animate().shake(
-                          delay: const Duration(milliseconds: 700),
-                          duration: const Duration(milliseconds: 1000),
+                          delay: const Duration(milliseconds: 500),
+                          duration: const Duration(milliseconds: 700),
                         ),
                   );
                 }
@@ -297,6 +269,50 @@ class _QuestionAnswerContainerState
           ],
         );
       },
+    );
+  }
+
+  Widget _answerResultContainer(
+      Color backgroundColor, IconData? iconData, String message) {
+    final children = <Widget>[];
+
+    if (iconData != null) {
+      children.addAll([
+        Icon(
+          iconData,
+          color: Colors.white,
+        ),
+        const SizedBox(
+          width: 8.0,
+        ),
+      ]);
+    }
+
+    children.add(
+      Text(
+        message,
+        style: const TextStyle(
+          fontSize: 16,
+          fontWeight: FontWeight.w700,
+          color: Colors.white,
+        ),
+      ),
+    );
+
+    return Container(
+      padding: const EdgeInsets.symmetric(
+        horizontal: 16.0,
+        vertical: 8.0,
+      ),
+      decoration: BoxDecoration(
+        color: backgroundColor,
+        borderRadius: BorderRadius.circular(25),
+      ),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: children,
+      ),
     );
   }
 

@@ -13,15 +13,17 @@ class OptionAnswerNotifier extends StateNotifier<OptionAnswerState> {
         );
 
   void toggleAnswer(String? selectedAnswer, String correctAnswer) {
-    if (selectedAnswer == null) {
-      state = const OptionAnswerState.empty();
-      return;
-    }
-    if (selectedAnswer == correctAnswer) {
-      state = const OptionAnswerState.correct();
-    } else {
-      state = const OptionAnswerState.wrong();
-    }
+    Future.delayed(const Duration(milliseconds: 1500), () {
+      if (selectedAnswer == null) {
+        state = const OptionAnswerState.empty();
+        return;
+      }
+      if (selectedAnswer == correctAnswer) {
+        state = const OptionAnswerState.correct();
+      } else {
+        state = const OptionAnswerState.wrong();
+      }
+    });
   }
 
   void resetOptions() {
