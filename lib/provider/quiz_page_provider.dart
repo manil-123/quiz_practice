@@ -1,4 +1,3 @@
-import 'dart:developer';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:quiz_practice/app/state/generic_state.dart';
 import 'package:quiz_practice/constants/question_list.dart';
@@ -47,12 +46,18 @@ class QuizPageNotifier extends StateNotifier<GenericState<QuizPageState>> {
     );
   }
 
-  void checkAnswer() {
-    state.maybeWhen(
+  bool checkAnswer() {
+    return state.maybeWhen(
       success: (quizPageState) {
         final selectedAnswer = quizPageState.selectedAnswer;
         final remainingLives = quizPageState.lives;
-        log("remaining lives $remainingLives");
+        // This will show Correct/Wrong answer text in a container
+        // Also it will show correct answer with green background on the options list.
+        // For UI purpose only.
+        optionAnswerProvider.toggleAnswer(
+          selectedAnswer,
+          quizPageState.currentQuestion.correctAnswer,
+        );
 
         // When user does not select any answer or the incorrect answer is selected.
         if (selectedAnswer == null ||
@@ -66,6 +71,7 @@ class QuizPageNotifier extends StateNotifier<GenericState<QuizPageState>> {
               optionAnswerProvider.resetOptions();
               state = const GenericState<QuizPageState>.error("Game Over");
             });
+            return false;
           } else {
             // It will need to reduce coin when remaining lives is available.
             // reduceCoins();
@@ -73,21 +79,17 @@ class QuizPageNotifier extends StateNotifier<GenericState<QuizPageState>> {
             //
             // Load next question with the updated lives count which is decreased by 1.
             loadNextQuestion(remainingLives - 1);
+            return true;
           }
         } else {
           // If answer is correct then check for the next question.
           loadNextQuestion(remainingLives);
+          return true;
         }
-
-        // This will show Correct/Wrong answer text in a container
-        // Also it will show correct answer with green background on the options list.
-        // For UI purpose only.
-        optionAnswerProvider.toggleAnswer(
-          selectedAnswer,
-          quizPageState.currentQuestion.correctAnswer,
-        );
       },
-      orElse: () {},
+      orElse: () {
+        return false;
+      },
     );
   }
 

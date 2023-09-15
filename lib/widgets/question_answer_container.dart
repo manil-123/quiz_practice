@@ -1,5 +1,5 @@
 import 'dart:async';
-import 'dart:developer';
+import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -23,6 +23,9 @@ class _QuestionAnswerContainerState
   double progress = 0.0;
   late Timer timer;
   int _timerRemainingSeconds = 10;
+  bool _shouldRestartTimer = true;
+
+  final _audioPlayer = AudioPlayer();
 
   UniqueKey _animateKey = UniqueKey();
 
@@ -36,6 +39,7 @@ class _QuestionAnswerContainerState
   }
 
   void startTimer() {
+    _playSound();
     timer = Timer.periodic(const Duration(seconds: 1), (timer) {
       if (mounted) {
         setState(() {
@@ -44,16 +48,20 @@ class _QuestionAnswerContainerState
           }
           if (_timerRemainingSeconds == 0) {
             timer.cancel();
-            ref.read(quizPageProvider.notifier).checkAnswer();
-            Future.delayed(const Duration(milliseconds: 3000), () {
-              _timerRemainingSeconds = 10;
-              startTimer();
-              if (mounted) {
-                setState(() {
-                  _animateKey = UniqueKey();
-                });
-              }
-            });
+            _resetSound();
+            _shouldRestartTimer =
+                ref.read(quizPageProvider.notifier).checkAnswer();
+            if (_shouldRestartTimer) {
+              Future.delayed(const Duration(milliseconds: 3000), () {
+                _timerRemainingSeconds = 10;
+                startTimer();
+                if (mounted) {
+                  setState(() {
+                    _animateKey = UniqueKey();
+                  });
+                }
+              });
+            }
           }
           progress = 1.0 - (_timerRemainingSeconds / 10.0);
         });
@@ -61,15 +69,29 @@ class _QuestionAnswerContainerState
     });
   }
 
-  void restartTimer() {
-    timer.cancel(); // Cancel the existing timer
-    _timerRemainingSeconds = 10;
-    startTimer(); // Restart the timer
+  void _playSound() async {
+    Future.delayed(const Duration(milliseconds: 800), () async {
+      await _audioPlayer.play(
+        AssetSource('sounds/timer.mp3'),
+        volume: 1,
+      );
+    });
   }
+
+  void _resetSound() async {
+    await _audioPlayer.stop();
+  }
+
+  // void restartTimer() {
+  //   timer.cancel(); // Cancel the existing timer
+  //   _timerRemainingSeconds = 10;
+  //   startTimer(); // Restart the timer
+  // }
 
   @override
   void dispose() {
     timer.cancel();
+    _audioPlayer.dispose();
     super.dispose();
   }
 
@@ -79,21 +101,12 @@ class _QuestionAnswerContainerState
 
     final optionAnswerState = ref.watch(optionAnswerProvider);
 
-    ref.listen(quizPageProvider, (previous, next) {
-      log(previous.toString());
-      log(next.toString());
-      next.whenOrNull(
-        success: (data) {
-          log(next.toString());
-        },
-      );
-    });
-
     return quizPageState.maybeWhen(
       orElse: () {
         return const CircularProgressIndicator();
       },
       error: (errorMessgae) {
+        _resetSound();
         return Center(
           child: AlertDialog(
             shape: const RoundedRectangleBorder(
@@ -354,6 +367,8 @@ class AnswerOption extends ConsumerWidget {
 
     return optionAnswerState.maybeWhen(
       orElse: () {
+        // It represents correct or wrong state of optionAnswerState
+        // Show correct answer when the answer is selected
         return _answerContainer(
           text == correctAnswer ? Colors.green : AppColors.answerOptionColor,
           text == correctAnswer ? Colors.white : Colors.black,
