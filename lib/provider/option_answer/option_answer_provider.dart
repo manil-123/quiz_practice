@@ -23,4 +23,8 @@ class OptionAnswerNotifier extends StateNotifier<OptionAnswerState> {
       state = const OptionAnswerState.wrong();
     }
   }
+
+  void resetOptions() {
+    state = const OptionAnswerState.initial();
+  }
 }
