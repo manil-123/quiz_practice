@@ -8,6 +8,9 @@ import 'package:quiz_practice/models/question.dart';
 import 'package:quiz_practice/provider/option_answer/option_answer_provider.dart';
 import 'package:quiz_practice/provider/quiz_page_provider.dart';
 import 'package:quiz_practice/utils/timer_painter.dart';
+import 'package:quiz_practice/widgets/answer_result_container.dart';
+
+import 'game_over.dart';
 
 class QuestionAnswerContainer extends StatefulHookConsumerWidget {
   const QuestionAnswerContainer({super.key});
@@ -107,41 +110,7 @@ class _QuestionAnswerContainerState
       },
       error: (errorMessgae) {
         _resetSound();
-        return Center(
-          child: AlertDialog(
-            shape: const RoundedRectangleBorder(
-              borderRadius: BorderRadius.all(
-                Radius.circular(0.0),
-              ),
-            ),
-            title: Image.asset('assets/images/game_over.jpg'),
-            contentPadding: const EdgeInsets.only(
-              top: 32,
-            ),
-            content: InkWell(
-              onTap: () {
-                Navigator.of(context).pop();
-              },
-              child: Container(
-                padding: const EdgeInsets.all(8.0),
-                decoration: BoxDecoration(
-                  color: AppColors.purpleColor.withOpacity(0.8),
-                ),
-                width: double.infinity,
-                child: const Padding(
-                  padding: EdgeInsets.symmetric(vertical: 6.0),
-                  child: Text(
-                    'Exit Game',
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                      color: Colors.white,
-                    ),
-                  ),
-                ),
-              ),
-            ),
-          ),
-        );
+        return const GameOver();
       },
       success: (quizDataSuccessState) {
         return Stack(
@@ -244,31 +213,31 @@ class _QuestionAnswerContainerState
                       children: [
                         optionAnswerState.maybeWhen(
                           correct: () {
-                            return _answerResultContainer(
-                              Colors.blue,
-                              Icons.check,
-                              'Correct',
+                            return const AnswerResultContainer(
+                              backgroundColor: Colors.blue,
+                              iconData: Icons.check,
+                              message: 'Correct',
                             );
                           },
                           orElse: () {
-                            return _answerResultContainer(
-                              Colors.red,
-                              null,
-                              'Please wait...',
+                            return const AnswerResultContainer(
+                              backgroundColor: Colors.red,
+                              iconData: null,
+                              message: 'Please wait...',
                             );
                           },
                           empty: () {
-                            return _answerResultContainer(
-                              Colors.blue,
-                              Icons.timer,
-                              'TIME OVER',
+                            return const AnswerResultContainer(
+                              backgroundColor: Colors.blue,
+                              iconData: Icons.timer,
+                              message: 'TIME OVER',
                             );
                           },
                           wrong: () {
-                            return _answerResultContainer(
-                              Colors.red,
-                              Icons.close,
-                              'Wrong',
+                            return const AnswerResultContainer(
+                              backgroundColor: Colors.red,
+                              iconData: Icons.close,
+                              message: 'Wrong',
                             );
                           },
                         ),
@@ -284,50 +253,6 @@ class _QuestionAnswerContainerState
           ],
         );
       },
-    );
-  }
-
-  Widget _answerResultContainer(
-      Color backgroundColor, IconData? iconData, String message) {
-    final children = <Widget>[];
-
-    if (iconData != null) {
-      children.addAll([
-        Icon(
-          iconData,
-          color: Colors.white,
-        ),
-        const SizedBox(
-          width: 8.0,
-        ),
-      ]);
-    }
-
-    children.add(
-      Text(
-        message,
-        style: const TextStyle(
-          fontSize: 16,
-          fontWeight: FontWeight.w700,
-          color: Colors.white,
-        ),
-      ),
-    );
-
-    return Container(
-      padding: const EdgeInsets.symmetric(
-        horizontal: 16.0,
-        vertical: 8.0,
-      ),
-      decoration: BoxDecoration(
-        color: backgroundColor,
-        borderRadius: BorderRadius.circular(25),
-      ),
-      child: Row(
-        mainAxisSize: MainAxisSize.min,
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: children,
-      ),
     );
   }
 
